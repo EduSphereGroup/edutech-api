@@ -9,11 +9,7 @@ import router from "./shared/router";
 setGlobalOptions({ region: "southamerica-east1", maxInstances: 10 });
 
 const app = express();
-app.use(cors({
-  origin: ['https://edutech-wine.vercel.app'],
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use(router);
