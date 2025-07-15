@@ -102,6 +102,41 @@ class UserController {
       return res.status(500).json({ error: "Erro interno do servidor." });
     }
   }
+
+  async getPreferences(req: Request, res: Response) {
+    try {
+      const uid = (req as any).uid;
+
+      if (!uid) {
+        return res.status(401).json({ error: "Usuário não autenticado" });
+      }
+
+      const preferences = await userService.getUserPreferences(uid);
+      return res.status(200).json(preferences || {});
+    } catch (error) {
+      console.error("Erro ao obter preferências:", error);
+      return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+  }
+
+  async savePreferences(req: Request, res: Response) {
+  try {
+    const uid = (req as any).uid;
+    const { grade, subject, difficulty } = req.body;
+
+    if (!grade || !subject || !difficulty) {
+      return res.status(400).json({ error: "Parâmetros obrigatórios" });
+    }
+
+    await userService.saveUserPreferences(uid, { grade, subject, difficulty });
+
+    return res.status(200).json({ message: "Preferências salvas com sucesso" });
+  } catch (error) {
+    console.error("Erro ao salvar preferências:", error);
+    return res.status(500).json({ error: "Erro interno do servidor" });
+  }
+}
+
 }
 
 export const userController = new UserController();

@@ -105,6 +105,31 @@ class UserService {
       });
     }
   }
+
+  async saveUserPreferences(
+    uid: string,
+    preferences: { grade: string; subject: string; difficulty: string }
+  ) {
+    const db = admin.firestore();
+    await db.collection("users").doc(uid).set(
+      {
+        preferences,
+        completedOnboarding: true,
+      },
+      { merge: true }
+    );
+  }
+
+  async getUserPreferences(uid: string) {
+    const db = admin.firestore();
+    const doc = await db.collection("userPreferences").doc(uid).get();
+
+    if (!doc.exists) {
+      return null;
+    }
+
+    return doc.data();
+  }
 }
 
 export const userService = new UserService();

@@ -15,4 +15,9 @@ router.get("/badges", authenticate, userController.getBadges);
 router.get("/modules", authenticate, userController.getModules);
 router.get("/modules/:id", authenticate, userController.getModuleById);
 
+router.get("/preferences", authenticate, userController.getPreferences);
+router.post("/preferences", authenticate, userController.savePreferences);
+
+
+
 export default router;
